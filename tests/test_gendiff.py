@@ -1,3 +1,4 @@
+import json
 import sys
 from pathlib import Path
 
@@ -137,3 +138,82 @@ def test_cli(
     captured = capsys.readouterr()
 
     assert captured.out == f'{expected}\n'
+
+
+@pytest.mark.parametrize(
+    ('file1_name', 'file2_name'),
+    [
+        (
+            'nested_file1.json',
+            'nested_file2.json',
+        ),
+        (
+            'nested_file1.yml',
+            'nested_file2.yaml',
+        ),
+    ],
+)
+def test_generate_diff_json(
+    file1_name,
+    file2_name,
+):
+    file1 = get_test_data_path(file1_name)
+    file2 = get_test_data_path(file2_name)
+
+    result = generate_diff(
+        file1,
+        file2,
+        'json',
+    )
+
+    parsed_result = json.loads(result)
+
+    assert isinstance(parsed_result, list)
+    assert [
+        node['key']
+        for node in parsed_result
+    ] == [
+        'common',
+        'group1',
+        'group2',
+        'group3',
+    ]
+
+
+def test_json_formats_have_same_data():
+    json_result = generate_diff(
+        get_test_data_path('nested_file1.json'),
+        get_test_data_path('nested_file2.json'),
+        'json',
+    )
+    yaml_result = generate_diff(
+        get_test_data_path('nested_file1.yml'),
+        get_test_data_path('nested_file2.yaml'),
+        'json',
+    )
+
+    assert json.loads(json_result) == json.loads(yaml_result)
+
+
+def test_cli_json(monkeypatch, capsys):
+    file1 = get_test_data_path('nested_file1.json')
+    file2 = get_test_data_path('nested_file2.json')
+
+    monkeypatch.setattr(
+        sys,
+        'argv',
+        [
+            'gendiff',
+            '--format',
+            'json',
+            str(file1),
+            str(file2),
+        ],
+    )
+
+    main()
+
+    captured = capsys.readouterr()
+    parsed_result = json.loads(captured.out)
+
+    assert isinstance(parsed_result, list)
