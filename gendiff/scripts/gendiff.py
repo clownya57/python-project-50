@@ -1,5 +1,6 @@
 import argparse
-import json
+
+from gendiff import generate_diff
 
 DESCRIPTION = 'Compares two configuration files and shows a difference.'
 
@@ -19,14 +20,13 @@ def parse_args():
     )
     return parser.parse_args()
 
-def parse_file(filepath):
-    with open(filepath, encoding='utf-8') as file:
-        return json.load(file)
-
 def main():
     args = parse_args()
-    parse_file(args.first_file)
-    parse_file(args.second_file)
+    diff = generate_diff(
+        args.first_file,
+        args.second_file,
+    )
+    print(diff)
 
 if __name__ == '__main__':
     main()
