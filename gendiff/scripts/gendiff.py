@@ -10,8 +10,10 @@ def parse_args():
         prog='gendiff',
         description=DESCRIPTION,
     )
+
     parser.add_argument('first_file')
     parser.add_argument('second_file')
+
     parser.add_argument(
         '-f',
         '--format',
@@ -19,15 +21,19 @@ def parse_args():
         default='stylish',
         help='set format of output',
     )
+
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
+
     diff = generate_diff(
         args.first_file,
         args.second_file,
+        format_name=args.format,
     )
+
     print(diff)
 
 

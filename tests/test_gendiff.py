@@ -9,8 +9,26 @@ from gendiff.scripts.gendiff import main
 TEST_DATA_DIR = Path(__file__).parent / 'test_data'
 
 TEST_CASES = [
-    ('file1.json', 'file2.json'),
-    ('file1.yml', 'file2.yaml'),
+    (
+        'file1.json',
+        'file2.json',
+        'expected_stylish.txt',
+    ),
+    (
+        'file1.yml',
+        'file2.yaml',
+        'expected_stylish.txt',
+    ),
+    (
+        'nested_file1.json',
+        'nested_file2.json',
+        'expected_nested_stylish.txt',
+    ),
+    (
+        'nested_file1.yml',
+        'nested_file2.yaml',
+        'expected_nested_stylish.txt',
+    ),
 ]
 
 
@@ -24,32 +42,51 @@ def read_test_data(filename):
 
 
 @pytest.mark.parametrize(
-    ('file1_name', 'file2_name'),
+    ('file1_name', 'file2_name', 'expected_name'),
     TEST_CASES,
 )
-def test_generate_diff(file1_name, file2_name):
+def test_generate_diff(
+    file1_name,
+    file2_name,
+    expected_name,
+):
     file1 = get_test_data_path(file1_name)
     file2 = get_test_data_path(file2_name)
-    expected = read_test_data('expected_stylish.txt')
+    expected = read_test_data(expected_name)
 
-    actual = generate_diff(file1, file2)
-
-    assert actual == expected
+    assert generate_diff(file1, file2) == expected
+    assert generate_diff(
+        file1,
+        file2,
+        format_name='stylish',
+    ) == expected
 
 
 @pytest.mark.parametrize(
-    ('file1_name', 'file2_name'),
+    ('file1_name', 'file2_name', 'expected_name'),
     TEST_CASES,
 )
-def test_cli(monkeypatch, capsys, file1_name, file2_name):
+def test_cli(
+    monkeypatch,
+    capsys,
+    file1_name,
+    file2_name,
+    expected_name,
+):
     file1 = get_test_data_path(file1_name)
     file2 = get_test_data_path(file2_name)
-    expected = read_test_data('expected_stylish.txt')
+    expected = read_test_data(expected_name)
 
     monkeypatch.setattr(
         sys,
         'argv',
-        ['gendiff', str(file1), str(file2)],
+        [
+            'gendiff',
+            '--format',
+            'stylish',
+            str(file1),
+            str(file2),
+        ],
     )
 
     main()
