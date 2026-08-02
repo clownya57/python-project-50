@@ -1,6 +1,8 @@
+from gendiff.formatters.plain import format_plain
 from gendiff.formatters.stylish import format_stylish
 
 FORMATTERS = {
+    'plain': format_plain,
     'stylish': format_stylish,
 }
 

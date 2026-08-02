@@ -8,7 +8,7 @@ from gendiff.scripts.gendiff import main
 
 TEST_DATA_DIR = Path(__file__).parent / 'test_data'
 
-TEST_CASES = [
+STYLISH_CASES = [
     (
         'file1.json',
         'file2.json',
@@ -31,6 +31,32 @@ TEST_CASES = [
     ),
 ]
 
+PLAIN_CASES = [
+    (
+        'nested_file1.json',
+        'nested_file2.json',
+    ),
+    (
+        'nested_file1.yml',
+        'nested_file2.yaml',
+    ),
+]
+
+CLI_CASES = [
+    (
+        'stylish',
+        'nested_file1.json',
+        'nested_file2.json',
+        'expected_nested_stylish.txt',
+    ),
+    (
+        'plain',
+        'nested_file1.json',
+        'nested_file2.json',
+        'expected_plain.txt',
+    ),
+]
+
 
 def get_test_data_path(filename):
     return TEST_DATA_DIR / filename
@@ -43,9 +69,9 @@ def read_test_data(filename):
 
 @pytest.mark.parametrize(
     ('file1_name', 'file2_name', 'expected_name'),
-    TEST_CASES,
+    STYLISH_CASES,
 )
-def test_generate_diff(
+def test_generate_diff_stylish(
     file1_name,
     file2_name,
     expected_name,
@@ -55,20 +81,37 @@ def test_generate_diff(
     expected = read_test_data(expected_name)
 
     assert generate_diff(file1, file2) == expected
-    assert generate_diff(
-        file1,
-        file2,
-        format_name='stylish',
-    ) == expected
+    assert generate_diff(file1, file2, 'stylish') == expected
 
 
 @pytest.mark.parametrize(
-    ('file1_name', 'file2_name', 'expected_name'),
-    TEST_CASES,
+    ('file1_name', 'file2_name'),
+    PLAIN_CASES,
+)
+def test_generate_diff_plain(
+    file1_name,
+    file2_name,
+):
+    file1 = get_test_data_path(file1_name)
+    file2 = get_test_data_path(file2_name)
+    expected = read_test_data('expected_plain.txt')
+
+    assert generate_diff(file1, file2, 'plain') == expected
+
+
+@pytest.mark.parametrize(
+    (
+        'format_name',
+        'file1_name',
+        'file2_name',
+        'expected_name',
+    ),
+    CLI_CASES,
 )
 def test_cli(
     monkeypatch,
     capsys,
+    format_name,
     file1_name,
     file2_name,
     expected_name,
@@ -83,7 +126,7 @@ def test_cli(
         [
             'gendiff',
             '--format',
-            'stylish',
+            format_name,
             str(file1),
             str(file2),
         ],

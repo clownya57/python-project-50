@@ -9,3 +9,5 @@
 [![asciicast](https://asciinema.org/a/6hZ6dCtwR5860C4x.svg)](https://asciinema.org/a/6hZ6dCtwR5860C4x)
 ### Recursive comparison demonstration
 [![asciicast](https://asciinema.org/a/eCvPOjjCqgLECNm2.svg)](https://asciinema.org/a/eCvPOjjCqgLECNm2)
+### Plain format demonstration
+[![asciicast](https://asciinema.org/a/AscIeq2SwiEztKju.svg)](https://asciinema.org/a/AscIeq2SwiEztKju)
