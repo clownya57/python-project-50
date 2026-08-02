@@ -1,0 +1,18 @@
+[project]
+name = "hexlet-code"
+version = "0.1.0"
+authors = [
+    { name = "Ruslan Atpaev", email = "rus16.steam@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+gendiff = "gendiff.scripts.gendiff:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["gendiff"]
