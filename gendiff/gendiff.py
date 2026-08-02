@@ -1,8 +1,10 @@
 import json
 
+
 def _parse_file(filepath):
     with open(filepath, encoding='utf-8') as file:
         return json.load(file)
+
 
 def _stringify(value):
     if isinstance(value, bool):
@@ -12,6 +14,7 @@ def _stringify(value):
         return 'null'
 
     return str(value)
+
 
 def _build_lines(key, data1, data2):
     if key not in data2:
@@ -33,6 +36,7 @@ def _build_lines(key, data1, data2):
         f'  - {key}: {_stringify(data1[key])}',
         f'  + {key}: {_stringify(data2[key])}',
     )
+
 
 def generate_diff(file_path1, file_path2):
     data1 = _parse_file(file_path1)

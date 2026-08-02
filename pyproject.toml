@@ -16,3 +16,10 @@ gendiff = "gendiff.scripts.gendiff:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["gendiff"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.16.1",
+]
