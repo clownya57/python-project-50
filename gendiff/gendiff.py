@@ -1,9 +1,4 @@
-import json
-
-
-def _parse_file(filepath):
-    with open(filepath, encoding='utf-8') as file:
-        return json.load(file)
+from gendiff.parser import parse
 
 
 def _stringify(value):
@@ -39,8 +34,8 @@ def _build_lines(key, data1, data2):
 
 
 def generate_diff(file_path1, file_path2):
-    data1 = _parse_file(file_path1)
-    data2 = _parse_file(file_path2)
+    data1 = parse(file_path1)
+    data2 = parse(file_path2)
 
     keys = sorted(set(data1) | set(data2))
 

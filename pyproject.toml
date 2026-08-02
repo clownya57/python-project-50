@@ -5,7 +5,9 @@ authors = [
     { name = "Ruslan Atpaev", email = "rus16.steam@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "pyyaml>=6.0.3",
+]
 
 [build-system]
 requires = ["hatchling"]
