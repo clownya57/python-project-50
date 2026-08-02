@@ -29,12 +29,12 @@ jobs:
         run: |
           make test-coverage
 
-       - name: SonarQubeScan
-         uses: SonarSource/sonarqube-scan-action@v7
-         env:
-           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-         with:
-           args: >
-             -Dsonar.projectKey=YOUR_PROJECT_KEY
-             -Dsonar.organization=YOUR_ORGANIZATION
-             -Dsonar.python.coverage.reportPaths=coverage.xml
+       -name: SonarQubeScan
+        uses: SonarSource/sonarqube-scan-action@v7
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=clownya57_python-project-50
+            -Dsonar.organization=clownya57-brain-games
+            -Dsonar.python.coverage.reportPaths=coverage.xml
